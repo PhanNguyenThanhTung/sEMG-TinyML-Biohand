@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sEMG-TinyML-Biohand | 3D Hand Simulator</title>
+    <link rel="stylesheet" href="./css/style.css">
+    
+    <!-- Importmap Three.js (Offline từ thư mục libs) -->
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "./libs/three.module.js",
+        "three/addons/controls/OrbitControls.js": "./libs/OrbitControls.js",
+        "three/addons/loaders/GLTFLoader.js": "./libs/GLTFLoader.js",
+        "three/addons/loaders/FBXLoader.js": "./libs/FBXLoader.js"
+      }
+    }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <!-- 3D Canvas Container -->
+        <div id="canvas-container"></div>
+
+        <!-- Header / HUD Top -->
+        <header class="hud-header">
+            <div class="brand">
+                <div class="status-dot"></div>
+                <div class="brand-text">
+                    <h1>sEMG Biohand</h1>
+                    <span>3D Hand Motion Simulator</span>
+                </div>
+            </div>
+            
+            <div class="current-state-badge" id="stateBadge">
+                <span class="badge-icon">💤</span>
+                <span class="badge-label">Thả lỏng (Relax)</span>
+            </div>
+        </header>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="spinner"></div>
+            <p>Đang tải mô hình 3D Bàn tay Robot Sinh học (Bionic Biohand)...</p>
+        </div>
+
+        <!-- Floating HUD Controls -->
+        <div class="hud-controls">
+            <div class="control-card">
+                <div class="card-header">
+                    <span class="card-title">ĐIỀU KHIỂN CỬ ĐỘNG</span>
+                    <span class="card-sub">3 Trạng thái</span>
+                </div>
+
+                <div class="button-group">
+                    <button class="state-btn active" id="btnRelax" data-pose="relax">
+                        <span class="btn-icon">💤</span>
+                        <div class="btn-content">
+                            <span class="btn-name">Thả lỏng</span>
+                            <span class="btn-sub">Tự nhiên</span>
+                        </div>
+                        <span class="btn-key">1</span>
+                    </button>
+
+                    <button class="state-btn" id="btnFist" data-pose="fist">
+                        <span class="btn-icon">✊</span>
+                        <div class="btn-content">
+                            <span class="btn-name">Nắm chặt</span>
+                            <span class="btn-sub">Bàn tay gập</span>
+                        </div>
+                        <span class="btn-key">2</span>
+                    </button>
+
+                    <button class="state-btn" id="btnOpen" data-pose="open">
+                        <span class="btn-icon">🖐️</span>
+                        <div class="btn-content">
+                            <span class="btn-name">Xòe tay</span>
+                            <span class="btn-sub">Duỗi căng</span>
+                        </div>
+                        <span class="btn-key">3</span>
+                    </button>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Ready for MCU note -->
+                <div class="mcu-status-card">
+                    <div class="mcu-status-header">
+                        <span class="mcu-icon">⚡</span>
+                        <span class="mcu-title">Chế độ Demo (Software)</span>
+                    </div>
+                    <p class="mcu-desc">Kiểm thử 3 trạng thái độc lập. Sẵn sàng tích hợp Web Serial API khi kết nối vi điều khiển.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer / Instructions Bar -->
+        <footer class="hud-footer">
+            <div class="instruction-item">
+                <span class="inst-key">Chuột trái</span> Xoay 360°
+            </div>
+            <div class="instruction-item">
+                <span class="inst-key">Cuộn chuột</span> Zoom gần / xa
+            </div>
+            <div class="instruction-item">
+                <span class="inst-key">Chuột phải</span> Dịch chuyển vị trí
+            </div>
+            <div class="instruction-item">
+                <span class="inst-key">Phím 1, 2, 3</span> Chuyển trạng thái nhanh
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="./js/app.js?v=7.1"></script>
+</body>
+</html>
