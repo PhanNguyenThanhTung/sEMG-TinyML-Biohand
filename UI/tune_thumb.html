@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="importmap">
+{
+  "imports": {
+    "three": "./libs/three.module.js",
+    "three/addons/loaders/FBXLoader.js": "./libs/FBXLoader.js"
+  }
+}
+</script>
+</head>
+<body style="margin:0; background:#080c14;">
+<script type="module">
+import * as THREE from 'three';
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 50);
+camera.position.set(0.65, 0.35, 2.3);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+scene.add(ambient);
+const light = new THREE.DirectionalLight(0xffffff, 2.5);
+light.position.set(2, 4, 3);
+scene.add(light);
+
+const loader = new FBXLoader();
+loader.load('./assets/hand_base.fbx', (fbx) => {
+    fbx.traverse(c => {
+        if (c.isMesh) {
+            c.material = new THREE.MeshStandardMaterial({
+                map: new THREE.TextureLoader().load('./assets/hand_diffuse.jpg'),
+                normalMap: new THREE.TextureLoader().load('./assets/hand_normal.jpg'),
+                roughness: 0.5
+            });
+        }
+    });
+    const box = new THREE.Box3().setFromObject(fbx);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    fbx.position.sub(center);
+    const scale = 2.0 / Math.max(size.x, size.y, size.z);
+    fbx.scale.set(-scale, scale, scale);
+    fbx.rotation.set(-Math.PI * 0.5, 0, 0);
+
+    const bones = {};
+    fbx.traverse(c => { if (c.isBone) bones[c.name] = c; });
+
+    const p = new URLSearchParams(window.location.search);
+    const t0x = parseFloat(p.get('t0x') || '0.85');
+    const t0y = parseFloat(p.get('t0y') || '-0.55');
+    const t0z = parseFloat(p.get('t0z') || '0.35');
+    const t1z = parseFloat(p.get('t1z') || '-0.30');
+    const t2z = parseFloat(p.get('t2z') || '-0.20');
+
+    bones['Finger_00'].rotation.set(t0x, t0y, t0z, 'XYZ');
+    bones['Finger_01'].rotation.set(0.13, 0, t1z, 'XYZ');
+    bones['Finger_02'].rotation.set(-0.16, 0, t2z, 'XYZ');
+
+    // Curl fingers
+    for (let f = 1; f <= 4; f++) {
+        bones['Finger_' + f + '1'].rotation.set(0, 0, -1.65, 'XYZ');
+        bones['Finger_' + f + '2'].rotation.set(0, 0, -1.75, 'XYZ');
+        bones['Finger_' + f + '3'].rotation.set(0, 0, -1.30, 'XYZ');
+    }
+
+    scene.add(fbx);
+    renderer.render(scene, camera);
+    window.rendered = true;
+});
+</script>
+</body>
+</html>
