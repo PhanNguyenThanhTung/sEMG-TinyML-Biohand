@@ -1,16 +1,63 @@
-# Tai lieu noi bo & quan ly nhom (phan cong cong viec, khao sat)
+# ==============================================================================
+# DATASET & DỮ LIỆU NẶNG (TUYỆT ĐỐI KHÔNG PUSH LÊN GITHUB)
+# ==============================================================================
+# Bỏ qua toàn bộ các thư mục chứa dataset
+dataset/
+datasets/
+data/
+*/dataset/
+*/datasets/
+*/data/
+
+# Bỏ qua các định dạng file dữ liệu đo đạc lớn
+*.csv
+*.tsv
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.mat
+*.parquet
+*.feather
+*.pkl
+*.pickle
+*.dat
+*.raw
+*.bin
+
+# Bỏ qua các thư mục mã nguồn mở tham khảo đã clone về (nặng hàng trăm MB)
+reference_repos/
+*/reference_repos/
+
+# ==============================================================================
+# MÔ HÌNH AI & CHECKPOINTS LỚN
+# ==============================================================================
+# File mô hình Keras / PyTorch / ONNX lớn (chỉ giữ file C++ Header .h)
+*.keras
+*.onnx
+*.pt
+*.pth
+*.ckpt
+checkpoints/
+*/checkpoints/
+
+# Ngoại lệ: Cho phép push các file TinyML C Header nhẹ (< 100KB) phục vụ firmware
+!*.h
+!*.hpp
+
+# ==============================================================================
+# TÀI LIỆU NỘI BỘ & QUẢN LÝ NHÓM
+# ==============================================================================
 Script/
+Pref/
 *.docx
 ~$*.docx
-
-# Tai lieu tham khao (PDF)
-Pref/
 *.pdf
-
-# File thao luan phuong an khong phai ma nguon chay
 *cac_phuong_an_thiet_ke_semg.md
 
-# File tam he thong & editor
+# ==============================================================================
+# FILE TẠM HỆ THỐNG & IDE / EDITOR
+# ==============================================================================
 .DS_Store
 Thumbs.db
 *.swp
@@ -18,25 +65,56 @@ Thumbs.db
 *~
 .idea/
 .vscode/
+*.sublime-project
+*.sublime-workspace
 
-# ESP-IDF & Embedded build artifacts
+# ==============================================================================
+# MÔI TRƯỜNG NHÚNG & ESP-IDF BUILD ARTIFACTS
+# ==============================================================================
 build/
+*/build/
 sdkconfig.old
 dependencies.lock
 managed_components/
 
-# Python & AI training artifacts
+# ==============================================================================
+# PYTHON VIRTUAL ENVIRONMENT & RUNTIME
+# ==============================================================================
 __pycache__/
+*/__pycache__/
 *.py[cod]
 *$py.class
 .venv/
 venv/
+*/venv/
+env/
+*/env/
 *.log
 
-# KiCad temporary & backup files
+# ==============================================================================
+# UNITY 3D ARTIFACTS (KHI PHÁT TRIỂN MÔ PHỎNG)
+# ==============================================================================
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+MemoryCaptures/
+*.pidb.meta
+*.pdb.meta
+*.csproj
+*.unityproj
+*.sln
+
+# ==============================================================================
+# KICAD / ALTIUM EDA TEMPORARY FILES
+# ==============================================================================
 *-backups/
 *.kicad_prl
 *.kicad_sch-bak
 *.kicad_pcb-bak
 *-erc.rpt
 *-drc.rpt
+History/
